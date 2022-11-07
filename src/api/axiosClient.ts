@@ -1,10 +1,10 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: "http://js-post-api.herokuapp.com/api",
+  baseURL: 'http://js-post-api.herokuapp.com/api',
   headers: {
-    "Content-Type": "application/json",
-  },
+    'Content-type': 'application/json',
+  }
 });
 
 // Add a request interceptor
@@ -18,7 +18,7 @@ axiosClient.interceptors.request.use(
 );
 
 // Add a response interceptor
-axiosClient.interceptors.response.use( 
+axiosClient.interceptors.response.use(
   function (response: AxiosResponse) {
     return response.data;
   },

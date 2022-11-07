@@ -1,11 +1,12 @@
 import { LoginPayload, logoutStart } from "./authSlice";
-import { fork, take, call, put } from "redux-saga/effects";
+import { fork, take, call, put, delay } from "redux-saga/effects";
 import { loginStart, loginSuccess, loginFailed } from "./authSlice";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { push } from 'redux-first-history'; 
+import { push } from "redux-first-history";
 
 function* handleLogin(payload: LoginPayload) {
   try {
+    yield delay(1000)
     localStorage.setItem("accessToken", "1234");
     yield put(
       loginSuccess({
@@ -13,22 +14,20 @@ function* handleLogin(payload: LoginPayload) {
         name: "Ease frontend",
       })
     );
-    yield put(push('/admin'))
+    yield put(push("/admin"));
   } catch (err: any) {
-    yield put(
-      loginFailed(err.message)
-    );
+    yield put(loginFailed(err.message));
   }
 }
 
 function* handleLogout() {
   localStorage.removeItem("accessToken");
-  yield put(push('/'))
+  yield put(push("/"));
 }
 
 function* watchLoginFlow() {
+  const isLoggedIn = localStorage.getItem("accessToken");
   while (true) {
-    const isLoggedIn = localStorage.getItem("accessToken");
     if (!isLoggedIn) {
       const action: PayloadAction<LoginPayload> = yield take(loginStart.type);
       yield fork(handleLogin, action.payload);

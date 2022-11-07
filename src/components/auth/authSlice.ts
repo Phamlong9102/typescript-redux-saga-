@@ -43,7 +43,6 @@ const authSlice = createSlice({
   },
 });
 
-
 // Export acions
 export const {
   loginStart,
